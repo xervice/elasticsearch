@@ -4,10 +4,19 @@ declare(strict_types=1);
 namespace Xervice\Elasticsearch\Business\Model\Index;
 
 
-use Xervice\DataProvider\Business\Model\DataProvider\DataProviderInterface;
-
 class MappingConverter implements MappingConverterInterface
 {
+    /**
+     * @var array
+     */
+    protected $typeMapping = [
+        'int' => 'integer',
+        'bool' => 'boolean',
+        'double' => 'double',
+        'float' => 'float',
+        'string' => 'string'
+    ];
+
     /**
      * @param string $dataProvider
      *
@@ -67,16 +76,8 @@ class MappingConverter implements MappingConverterInterface
     {
         $originalType = $config['type'];
 
-        if ($originalType === 'int') {
-            $data['type'] = 'integer';
-        } elseif ($originalType === 'bool') {
-            $data['type'] = 'boolean';
-        } elseif ($originalType === 'double') {
-            $data['type'] = 'double';
-        } elseif ($originalType === 'float') {
-            $data['type'] = 'float';
-        } elseif ($originalType === 'string') {
-            $data['type'] = 'text';
+        if (array_key_exists($originalType, $this->typeMapping)) {
+            $data['type'] = $this->typeMapping[$originalType];
         }
 
         if ($config['is_dataprovider']) {
