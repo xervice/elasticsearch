@@ -9,6 +9,8 @@ use Xervice\Core\Business\Model\Factory\AbstractBusinessFactory;
 use Xervice\Elasticsearch\Business\Collection\IndexCollection;
 use Xervice\Elasticsearch\Business\Model\Document\DocumentBuilder;
 use Xervice\Elasticsearch\Business\Model\Document\DocumentBuilderInterface;
+use Xervice\Elasticsearch\Business\Model\Document\DocumentCleaner;
+use Xervice\Elasticsearch\Business\Model\Document\DocumentCleanerInterface;
 use Xervice\Elasticsearch\Business\Model\Index\IndexBuilder;
 use Xervice\Elasticsearch\Business\Model\Index\IndexBuilderInterface;
 use Xervice\Elasticsearch\Business\Model\Index\MappingConverter;
@@ -66,6 +68,16 @@ class ElasticsearchBusinessFactory extends AbstractBusinessFactory
     {
         return new ResultSetConverter(
             $resultFormatterPlugins
+        );
+    }
+
+    /**
+     * @return \Xervice\Elasticsearch\Business\Model\Document\DocumentCleanerInterface
+     */
+    public function createDocumentCleaner(): DocumentCleanerInterface
+    {
+        return new DocumentCleaner(
+            $this->getClient()
         );
     }
 

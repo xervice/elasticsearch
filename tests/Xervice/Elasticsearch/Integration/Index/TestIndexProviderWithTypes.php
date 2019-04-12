@@ -25,7 +25,7 @@ class TestIndexProviderWithTypes implements IndexProviderInterface
             );
 
         $index = (new IndexDataProvider())
-            ->setName('unittest')
+            ->setName('testindex')
             ->setArguments(
                 [
                     'number_of_shards' => 1,

@@ -47,6 +47,21 @@ class ElasticsearchFacade extends AbstractFacade
     }
 
     /**
+     * Remove a list of documents in elasticsearch
+     *
+     * @api
+     *
+     * @param \DataProvider\DocumentListDataProvider $listDataProvider
+     */
+    public function deleteDocuments(DocumentListDataProvider $listDataProvider): void
+    {
+        $this
+            ->getFactory()
+            ->createDocumentCleaner()
+            ->deleteDocuments($listDataProvider);
+    }
+
+    /**
      * Send search request to elasticsearch
      * QueryExtenderPlugins can extend the query
      * ResultFormatterPlugins can format the result DataProvider

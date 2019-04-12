@@ -18,7 +18,7 @@ class TestIndexProvider implements IndexProviderInterface
     public function createIndex(IndexBuilderInterface $indexBuilder, MappingConverterInterface $mappingConverter): void
     {
         $index = (new IndexDataProvider())
-            ->setName('unittest')
+            ->setName('testindex')
             ->setArguments(
                 [
                     'number_of_shards' => 1,

@@ -91,10 +91,10 @@ class IntegrationTest extends \Codeception\Test\Unit
 
         $client = $this->getFactory()->getClient();
         $this->assertTrue(
-            $client->getIndex('unittest')->exists()
+            $client->getIndex('testindex')->exists()
         );
 
-        $client->getIndex('unittest')->delete();
+        $client->getIndex('testindex')->delete();
     }
 
     /**
@@ -109,16 +109,16 @@ class IntegrationTest extends \Codeception\Test\Unit
 
         $client = $this->getFactory()->getClient();
         $this->assertTrue(
-            $client->getIndex('unittest')->getType('testtype')->exists()
+            $client->getIndex('testindex')->getType('testtype')->exists()
         );
 
         $this->assertEquals(
             'integer',
-            $client->getIndex('unittest')->getType('testtype')->getMapping(
+            $client->getIndex('testindex')->getType('testtype')->getMapping(
             )['testtype']['properties']['Address']['properties']['Zip']['type']
         );
 
-        $client->getIndex('unittest')->delete();
+        $client->getIndex('testindex')->delete();
     }
 
     /**
@@ -160,9 +160,7 @@ class IntegrationTest extends \Codeception\Test\Unit
                     ->setContent($dataProvider->toArray())
             );
 
-        $this->getFacade()->createDocuments(
-            $documentList
-        );
+        $this->getFacade()->createDocuments($documentList);
 
         $textQuery = new QueryString('Unit');
         $boolQuery = new BoolQuery();
@@ -182,7 +180,8 @@ class IntegrationTest extends \Codeception\Test\Unit
             $testDto->getChildren()[0]->getName()
         );
 
-        $this->getFactory()->getClient()->getIndex('unittest')->delete();
+        $this->getFacade()->deleteDocuments($documentList);
+        $this->getFactory()->getClient()->getIndex('testindex')->delete();
     }
 
     /**
