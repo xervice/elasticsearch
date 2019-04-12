@@ -14,7 +14,7 @@ class MappingConverter implements MappingConverterInterface
         'bool' => 'boolean',
         'double' => 'double',
         'float' => 'float',
-        'string' => 'string'
+        'string' => 'text'
     ];
 
     /**
