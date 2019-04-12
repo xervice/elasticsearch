@@ -5,6 +5,10 @@ namespace Xervice\Elasticsearch\Business;
 
 
 use DataProvider\DocumentListDataProvider;
+use DataProvider\ElasticsearchResultSetDataProvider;
+use DataProvider\SearchDataProvider;
+use Elastica\Query;
+use Elastica\ResultSet;
 use Xervice\Core\Business\Model\Facade\AbstractFacade;
 use Xervice\Elasticsearch\Dependency\Plugin\DocumentBuilderPlugin;
 
@@ -40,5 +44,31 @@ class ElasticsearchFacade extends AbstractFacade
             ->getFactory()
             ->createDocumentBuilder()
             ->createDocuments($listDataProvider);
+    }
+
+    /**
+     * Send search request to elasticsearch
+     * QueryExtenderPlugins can extend the query
+     * ResultFormatterPlugins can format the result DataProvider
+     *
+     * @api
+     *
+     * @param string $index
+     * @param \Elastica\Query $query
+     * @param array $queryExtender
+     * @param array $resultFormatter
+     *
+     * @return \DataProvider\ElasticsearchResultSetDataProvider
+     */
+    public function search(
+        string $index,
+        Query $query,
+        array $queryExtender = [],
+        array $resultFormatter = []
+    ): ElasticsearchResultSetDataProvider {
+        return $this
+            ->getFactory()
+            ->createSearch($queryExtender, $resultFormatter)
+            ->search($index, $query);
     }
 }

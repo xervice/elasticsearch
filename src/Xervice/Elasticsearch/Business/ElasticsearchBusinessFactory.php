@@ -15,6 +15,12 @@ use Xervice\Elasticsearch\Business\Model\Index\MappingConverter;
 use Xervice\Elasticsearch\Business\Model\Index\MappingConverterInterface;
 use Xervice\Elasticsearch\Business\Model\Indexer;
 use Xervice\Elasticsearch\Business\Model\IndexerInterface;
+use Xervice\Elasticsearch\Business\Model\Search\Query\QueryBuilder;
+use Xervice\Elasticsearch\Business\Model\Search\Query\QueryBuilderInterface;
+use Xervice\Elasticsearch\Business\Model\Search\Result\ResultSetConverter;
+use Xervice\Elasticsearch\Business\Model\Search\Result\ResultSetConverterInterface;
+use Xervice\Elasticsearch\Business\Model\Search\Search;
+use Xervice\Elasticsearch\Business\Model\Search\SearchInterface;
 use Xervice\Elasticsearch\ElasticsearchDependencyProvider;
 
 /**
@@ -22,6 +28,47 @@ use Xervice\Elasticsearch\ElasticsearchDependencyProvider;
  */
 class ElasticsearchBusinessFactory extends AbstractBusinessFactory
 {
+    /**
+     * @param array $queryExtenderPlugins
+     * @param array $resultFormatterPlugins
+     *
+     * @return \Xervice\Elasticsearch\Business\Model\Search\SearchInterface
+     */
+    public function createSearch(
+        array $queryExtenderPlugins,
+        array $resultFormatterPlugins
+    ): SearchInterface {
+        return new Search(
+            $this->getClient(),
+            $this->createQueryBuilder($queryExtenderPlugins),
+            $this->createResultSetConverter($resultFormatterPlugins)
+        );
+    }
+
+    /**
+     * @param array $queryExtenderPlugins
+     *
+     * @return \Xervice\Elasticsearch\Business\Model\Search\Query\QueryBuilderInterface
+     */
+    public function createQueryBuilder(array $queryExtenderPlugins): QueryBuilderInterface
+    {
+        return new QueryBuilder(
+            $queryExtenderPlugins
+        );
+    }
+
+    /**
+     * @param array $resultFormatterPlugins
+     *
+     * @return \Xervice\Elasticsearch\Business\Model\Search\Result\ResultSetConverterInterface
+     */
+    public function createResultSetConverter(array $resultFormatterPlugins): ResultSetConverterInterface
+    {
+        return new ResultSetConverter(
+            $resultFormatterPlugins
+        );
+    }
+
     /**
      * @return \Xervice\Elasticsearch\Business\Model\Document\DocumentBuilderInterface
      */

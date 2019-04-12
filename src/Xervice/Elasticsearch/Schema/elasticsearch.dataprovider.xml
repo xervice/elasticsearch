@@ -29,4 +29,18 @@
         <DataElement name="Content" type="array"/>
     </DataProvider>
 
+    <DataProvider name="ElasticsearchResultSet">
+        <DataElement name="TotalHits" type="int"/>
+        <DataElement name="TotalTime" type="int"/>
+        <DataElement name="MaxScore" type="float"/>
+        <DataElement name="RawResults" type="ElasticSearchRawResult"/>
+    </DataProvider>
+    
+    <DataProvider name="ElasticSearchRawResult">
+        <DataElement name="Documents" type="array"/>
+        <DataElement name="Aggregations" type="array"/>
+        <DataElement name="Suggests" type="array"/>
+        <DataElement name="Results" type="array"/>
+    </DataProvider>
+
 </DataProviders>

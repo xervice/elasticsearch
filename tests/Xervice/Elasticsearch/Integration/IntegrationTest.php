@@ -5,6 +5,9 @@ use DataProvider\DocumentListDataProvider;
 use DataProvider\ElasticSearchTestAddressDataProvider;
 use DataProvider\ElasticSearchTestChildrenDataProvider;
 use DataProvider\ElasticSearchTestDataProvider;
+use Elastica\Query;
+use Elastica\Query\BoolQuery;
+use Elastica\Query\QueryString;
 use Xervice\Config\Business\XerviceConfig;
 use Xervice\Core\Business\Model\Locator\Dynamic\Business\DynamicBusinessLocator;
 use Xervice\Core\Business\Model\Locator\Locator;
@@ -31,6 +34,11 @@ class IntegrationTest extends \Codeception\Test\Unit
     {
         parent::setUp();
 
+
+        $originalPaths = XerviceConfig::getInstance()->getConfig()->get(DataProviderConfig::DATA_PROVIDER_PATHS);
+        $originalPattern = XerviceConfig::getInstance()->getConfig()->get(DataProviderConfig::FILE_PATTERN);
+
+
         Locator::getInstance()->dataProvider()->facade()->generateDataProvider();
 
         XerviceConfig::getInstance()->getConfig()->set(
@@ -43,6 +51,13 @@ class IntegrationTest extends \Codeception\Test\Unit
         XerviceConfig::set(DataProviderConfig::FILE_PATTERN, '*.testprovider.xml');
 
         Locator::getInstance()->dataProvider()->facade()->generateDataProvider();
+
+        XerviceConfig::getInstance()->getConfig()->set(
+            DataProviderConfig::DATA_PROVIDER_PATHS,
+            $originalPaths
+        );
+
+        XerviceConfig::set(DataProviderConfig::FILE_PATTERN, $originalPattern);
     }
 
     protected function tearDown()
@@ -149,6 +164,24 @@ class IntegrationTest extends \Codeception\Test\Unit
             $documentList
         );
 
+        $textQuery = new QueryString('Unit');
+        $boolQuery = new BoolQuery();
+        $boolQuery->addMust($textQuery);
+
+        $query = new Query($boolQuery);
+
+        $result = $this->getFacade()->search('testindex', $query);
+
+        $testDto = new ElasticSearchTestDataProvider();
+        $testDto->fromArray(
+            $result->getRawResults()->getResults()[0]->getData()
+        );
+
+        $this->assertEquals(
+            'Test Child',
+            $testDto->getChildren()[0]->getName()
+        );
+
         $this->getFactory()->getClient()->getIndex('unittest')->delete();
     }
 
@@ -170,7 +203,5 @@ class IntegrationTest extends \Codeception\Test\Unit
         );
 
         $indexer->createIndizes();
-
-
     }
 }
