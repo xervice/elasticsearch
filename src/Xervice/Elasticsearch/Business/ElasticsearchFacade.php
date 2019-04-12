@@ -6,17 +6,14 @@ namespace Xervice\Elasticsearch\Business;
 
 use DataProvider\DocumentListDataProvider;
 use DataProvider\ElasticsearchResultSetDataProvider;
-use DataProvider\SearchDataProvider;
 use Elastica\Query;
-use Elastica\ResultSet;
 use Xervice\Core\Business\Model\Facade\AbstractFacade;
-use Xervice\Elasticsearch\Dependency\Plugin\DocumentBuilderPlugin;
 
 /**
  * @method \Xervice\Elasticsearch\Business\ElasticsearchBusinessFactory getFactory()
  * @method \Xervice\Elasticsearch\ElasticsearchConfig getConfig()
  */
-class ElasticsearchFacade extends AbstractFacade
+class ElasticsearchFacade extends AbstractFacade implements ElasticsearchFacadeInterface
 {
     /**
      * Generate all indizes in elasticsearch

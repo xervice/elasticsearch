@@ -28,7 +28,7 @@ use Xervice\Elasticsearch\ElasticsearchDependencyProvider;
 /**
  * @method \Xervice\Elasticsearch\ElasticsearchConfig getConfig()
  */
-class ElasticsearchBusinessFactory extends AbstractBusinessFactory
+class ElasticsearchBusinessFactory extends AbstractBusinessFactory implements ElasticsearchBusinessFactoryInterface
 {
     /**
      * @param array $queryExtenderPlugins
