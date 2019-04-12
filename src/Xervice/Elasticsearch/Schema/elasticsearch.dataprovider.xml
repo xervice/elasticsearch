@@ -10,6 +10,23 @@
         <DataElement name="Name" type="string"/>
         <DataElement name="Arguments" type="array"/>
         <DataElement name="Delete" default="false" type="bool"/>
+        <DataElement name="Types" type="Type[]" singleton="Type"/>
+    </DataProvider>
+
+    <DataProvider name="Type">
+        <DataElement name="Name" type="string"/>
+        <DataElement name="Mapping" type="array"/>
+    </DataProvider>
+
+    <DataProvider name="DocumentList">
+        <DataElement name="Index" type="string"/>
+        <DataElement name="Type" type="string"/>
+        <DataElement name="Documents" type="Document[]" singleton="Document"/>
+    </DataProvider>
+
+    <DataProvider name="Document">
+        <DataElement name="Ident" type="int"/>
+        <DataElement name="Content" type="array"/>
     </DataProvider>
 
 </DataProviders>

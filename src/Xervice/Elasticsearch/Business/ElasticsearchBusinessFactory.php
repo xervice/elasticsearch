@@ -7,8 +7,12 @@ namespace Xervice\Elasticsearch\Business;
 use Elastica\Client;
 use Xervice\Core\Business\Model\Factory\AbstractBusinessFactory;
 use Xervice\Elasticsearch\Business\Collection\IndexCollection;
+use Xervice\Elasticsearch\Business\Model\Document\DocumentBuilder;
+use Xervice\Elasticsearch\Business\Model\Document\DocumentBuilderInterface;
 use Xervice\Elasticsearch\Business\Model\Index\IndexBuilder;
 use Xervice\Elasticsearch\Business\Model\Index\IndexBuilderInterface;
+use Xervice\Elasticsearch\Business\Model\Index\MappingConverter;
+use Xervice\Elasticsearch\Business\Model\Index\MappingConverterInterface;
 use Xervice\Elasticsearch\Business\Model\Indexer;
 use Xervice\Elasticsearch\Business\Model\IndexerInterface;
 use Xervice\Elasticsearch\ElasticsearchDependencyProvider;
@@ -19,14 +23,33 @@ use Xervice\Elasticsearch\ElasticsearchDependencyProvider;
 class ElasticsearchBusinessFactory extends AbstractBusinessFactory
 {
     /**
+     * @return \Xervice\Elasticsearch\Business\Model\Document\DocumentBuilderInterface
+     */
+    public function createDocumentBuilder(): DocumentBuilderInterface
+    {
+        return new DocumentBuilder(
+            $this->getClient()
+        );
+    }
+
+    /**
      * @return \Xervice\Elasticsearch\Business\Model\IndexerInterface
      */
     public function createIndexer(): IndexerInterface
     {
         return new Indexer(
             $this->getIndexProviderCollection(),
-            $this->createIndexBuilder()
+            $this->createIndexBuilder(),
+            $this->createMappingConverter()
         );
+    }
+
+    /**
+     * @return \Xervice\Elasticsearch\Business\Model\Index\MappingConverterInterface
+     */
+    public function createMappingConverter(): MappingConverterInterface
+    {
+        return new MappingConverter();
     }
 
     /**

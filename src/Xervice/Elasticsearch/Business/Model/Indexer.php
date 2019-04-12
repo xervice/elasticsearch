@@ -7,6 +7,7 @@ namespace Xervice\Elasticsearch\Business\Model;
 use Elastica\Client;
 use Xervice\Elasticsearch\Business\Collection\IndexCollection;
 use Xervice\Elasticsearch\Business\Model\Index\IndexBuilderInterface;
+use Xervice\Elasticsearch\Business\Model\Index\MappingConverterInterface;
 
 class Indexer implements IndexerInterface
 {
@@ -21,6 +22,11 @@ class Indexer implements IndexerInterface
     private $indexBuilder;
 
     /**
+     * @var \Xervice\Elasticsearch\Business\Model\Index\MappingConverterInterface
+     */
+    private $mappingConverter;
+
+    /**
      * Indexer constructor.
      *
      * @param \Xervice\Elasticsearch\Business\Collection\IndexCollection $indexCollection
@@ -28,16 +34,21 @@ class Indexer implements IndexerInterface
      */
     public function __construct(
         IndexCollection $indexCollection,
-        IndexBuilderInterface $indexBuilder
+        IndexBuilderInterface $indexBuilder,
+        MappingConverterInterface $mappingConverter
     ) {
         $this->indexCollection = $indexCollection;
         $this->indexBuilder = $indexBuilder;
+        $this->mappingConverter = $mappingConverter;
     }
 
     public function createIndizes(): void
     {
         foreach ($this->indexCollection as $indexProvider) {
-            $indexProvider->createIndex($this->indexBuilder);
+            $indexProvider->createIndex(
+                $this->indexBuilder,
+                $this->mappingConverter
+            );
         }
     }
 }

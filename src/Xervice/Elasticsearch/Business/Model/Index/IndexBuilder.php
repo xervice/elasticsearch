@@ -5,6 +5,9 @@ namespace Xervice\Elasticsearch\Business\Model\Index;
 
 
 use DataProvider\IndexDataProvider;
+use Elastica\Client;
+use Elastica\Index;
+use Elastica\Type\Mapping;
 
 class IndexBuilder implements IndexBuilderInterface
 {
@@ -18,7 +21,7 @@ class IndexBuilder implements IndexBuilderInterface
      *
      * @param \Elastica\Client $client
      */
-    public function __construct(\Elastica\Client $client)
+    public function __construct(Client $client)
     {
         $this->client = $client;
     }
@@ -34,5 +37,25 @@ class IndexBuilder implements IndexBuilderInterface
             $indexDataProvider->getArguments(),
             $indexDataProvider->getDelete()
         );
+
+        $this->createTypes($index, $indexDataProvider->getTypes());
+    }
+
+    /**
+     * @param \Elastica\Index $index
+     * @param \DataProvider\TypeDataProvider[] $types
+     */
+    protected function createTypes(Index $index, array $types): void
+    {
+        foreach ($types as $type) {
+            $esType = $index->getType($type->getName());
+
+            $mapping = new Mapping();
+            $mapping->setType($esType);
+
+            $mapping->setProperties($type->getMapping());
+
+            $mapping->send();
+        }
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Xervice\Elasticsearch\Business;
 
 
+use DataProvider\DocumentListDataProvider;
 use Xervice\Core\Business\Model\Facade\AbstractFacade;
+use Xervice\Elasticsearch\Dependency\Plugin\DocumentBuilderPlugin;
 
 /**
  * @method \Xervice\Elasticsearch\Business\ElasticsearchBusinessFactory getFactory()
@@ -19,6 +21,24 @@ class ElasticsearchFacade extends AbstractFacade
      */
     public function createIndizes(): void
     {
-        $this->getFactory()->createIndexer()->createIndizes();
+        $this
+            ->getFactory()
+            ->createIndexer()
+            ->createIndizes();
+    }
+
+    /**
+     * Create a list of documents in elasticsearch
+     *
+     * @api
+     *
+     * @param \DataProvider\DocumentListDataProvider $listDataProvider
+     */
+    public function createDocuments(DocumentListDataProvider $listDataProvider): void
+    {
+        $this
+            ->getFactory()
+            ->createDocumentBuilder()
+            ->createDocuments($listDataProvider);
     }
 }
