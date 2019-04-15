@@ -25,7 +25,7 @@ class TestIndexProvider implements IndexProviderInterface
                     'number_of_replicas' => 1
                 ]
             )
-            ->setDelete(true);
+            ->setDelete(false);
 
         $indexBuilder->createIndex($index);
     }

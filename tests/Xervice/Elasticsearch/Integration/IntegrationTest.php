@@ -64,7 +64,7 @@ class IntegrationTest extends \Codeception\Test\Unit
     {
         parent::tearDown();
 
-//        Locator::getInstance()->dataProvider()->facade()->cleanDataProvider();
+        Locator::getInstance()->dataProvider()->facade()->cleanDataProvider();
     }
 
 
@@ -88,6 +88,7 @@ class IntegrationTest extends \Codeception\Test\Unit
     public function testCreateExampleIndex()
     {
         $this->createIndex(TestIndexProvider::class);
+        $this->createIndex(TestIndexProvider::class);
 
         $client = $this->getFactory()->getClient();
         $this->assertTrue(
@@ -105,6 +106,7 @@ class IntegrationTest extends \Codeception\Test\Unit
      */
     public function testCreateExampleIndexWithType()
     {
+        $this->createIndex(TestIndexProviderWithTypes::class);
         $this->createIndex(TestIndexProviderWithTypes::class);
 
         $client = $this->getFactory()->getClient();

@@ -33,10 +33,12 @@ class IndexBuilder implements IndexBuilderInterface
     {
         $index = $this->client->getIndex($indexDataProvider->getName());
 
-        $index->create(
-            $indexDataProvider->getArguments(),
-            $indexDataProvider->getDelete()
-        );
+        if (!$index->exists() || $indexDataProvider->getDelete()) {
+            $index->create(
+                $indexDataProvider->getArguments(),
+                $indexDataProvider->getDelete()
+            );
+        }
 
         $this->createTypes($index, $indexDataProvider->getTypes());
     }
