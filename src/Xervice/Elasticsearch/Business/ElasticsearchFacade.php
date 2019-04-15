@@ -36,7 +36,7 @@ class ElasticsearchFacade extends AbstractFacade implements ElasticsearchFacadeI
      */
     public function getMapping(string $dataProviderClass): array
     {
-        $this
+        return $this
             ->getFactory()
             ->createMappingConverter()
             ->convertToMapping($dataProviderClass);
