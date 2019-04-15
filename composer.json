@@ -15,7 +15,8 @@
   "require": {
     "php": ">=7.1.0",
     "xervice/data-provider": "^2.2.0",
-    "ruflin/elastica": "^6.1.1"
+    "ruflin/elastica": "^6.1.1",
+    "xervice/kernel": "^2.0.0"
   },
   "autoload": {
     "psr-4": {
