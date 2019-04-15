@@ -57,4 +57,11 @@ interface ElasticsearchFacadeInterface
      */
     public function search(string $index, Query $query, array $queryExtender = [], array $resultFormatter = []
     ): ElasticsearchResultSetDataProvider;
+
+    /**
+     * @param string $dataProviderClass
+     *
+     * @return array
+     */
+    public function getMapping(string $dataProviderClass): array;
 }

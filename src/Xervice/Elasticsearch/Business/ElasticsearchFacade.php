@@ -8,6 +8,7 @@ use DataProvider\DocumentListDataProvider;
 use DataProvider\ElasticsearchResultSetDataProvider;
 use Elastica\Query;
 use Xervice\Core\Business\Model\Facade\AbstractFacade;
+use Xervice\DataProvider\Business\Model\DataProvider\DataProviderInterface;
 
 /**
  * @method \Xervice\Elasticsearch\Business\ElasticsearchBusinessFactory getFactory()
@@ -26,6 +27,19 @@ class ElasticsearchFacade extends AbstractFacade implements ElasticsearchFacadeI
             ->getFactory()
             ->createIndexer()
             ->createIndizes();
+    }
+
+    /**
+     * @param string $dataProviderClass
+     *
+     * @return array
+     */
+    public function getMapping(string $dataProviderClass): array
+    {
+        $this
+            ->getFactory()
+            ->createMappingConverter()
+            ->convertToMapping($dataProviderClass);
     }
 
     /**
